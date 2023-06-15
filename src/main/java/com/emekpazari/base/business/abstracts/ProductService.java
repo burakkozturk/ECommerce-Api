@@ -4,11 +4,8 @@ import com.emekpazari.base.business.request.CreateCategoryRequest;
 import com.emekpazari.base.business.request.CreateProductRequest;
 import com.emekpazari.base.business.request.UpdateCategoryRequest;
 import com.emekpazari.base.business.request.UpdateProductRequest;
-import com.emekpazari.base.business.response.GetAllCategoryResponse;
-import com.emekpazari.base.business.response.GetAllProductResponse;
-import com.emekpazari.base.business.response.GetByIdCategoryResponse;
-import com.emekpazari.base.business.response.GetByIdProductResponse;
-import com.emekpazari.base.business.response.GetProductsByCategoryIdResponse; // Yeni eklenen import
+import com.emekpazari.base.business.response.*;
+import com.emekpazari.base.entities.concretes.Product;
 
 import java.util.List;
 
@@ -19,4 +16,6 @@ public interface ProductService {
     void update(UpdateProductRequest updateProductRequest);
     void delete(int id);
     GetProductsByCategoryIdResponse getProductsByCategoryId(int categoryId); // Yeni metod
+
+    GetProductsByUserIdResponse getUserProducts(int userId);
 }

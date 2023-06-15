@@ -67,7 +67,4 @@ public class UserManager implements UserService {
     public void delete(int id) {
         this.userRepository.deleteById(id);
     }
-
-
-
 }

@@ -7,8 +7,10 @@ import com.emekpazari.base.business.response.*;
 import com.emekpazari.base.core.mappers.ModelMapperService;
 import com.emekpazari.base.dataAccess.CategoryRepository;
 import com.emekpazari.base.dataAccess.ProductRepository;
+import com.emekpazari.base.dataAccess.UserRepository;
 import com.emekpazari.base.entities.concretes.Category;
 import com.emekpazari.base.entities.concretes.Product;
+import com.emekpazari.base.entities.concretes.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,9 @@ public class ProductManager implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ModelMapperService modelMapperService;
@@ -86,5 +91,20 @@ public class ProductManager implements ProductService {
 
         return response;
     }
+
+    @Override
+    public GetProductsByUserIdResponse getUserProducts(int userId) {
+        List<Product> products = productRepository.findByUserId(userId);
+
+        List<GetAllProductResponse> productResponses = products.stream()
+                .map(product -> modelMapperService.forResponse()
+                        .map(product, GetAllProductResponse.class)).collect(Collectors.toList());
+
+        GetProductsByUserIdResponse response = new GetProductsByUserIdResponse();
+        response.setProducts(productResponses);
+
+        return response;
+    }
+
 
 }

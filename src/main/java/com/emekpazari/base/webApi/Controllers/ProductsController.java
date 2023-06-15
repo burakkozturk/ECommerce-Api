@@ -6,6 +6,8 @@ import com.emekpazari.base.business.request.UpdateProductRequest;
 import com.emekpazari.base.business.response.GetAllProductResponse;
 import com.emekpazari.base.business.response.GetByIdProductResponse;
 import com.emekpazari.base.business.response.GetProductsByCategoryIdResponse;
+import com.emekpazari.base.business.response.GetProductsByUserIdResponse;
+import com.emekpazari.base.entities.concretes.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,16 @@ public class ProductsController {
         return productService.getAll();
     }
 
+    @GetMapping("/{userId}/products")
+    public GetProductsByUserIdResponse getUserProducts(@PathVariable("userId") int userId) {
+        return productService.getUserProducts(userId);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public GetProductsByCategoryIdResponse getProductsByCategoryId(@PathVariable int categoryId) {
+        return productService.getProductsByCategoryId(categoryId);
+    }
+
     @GetMapping("/{id}")
     public GetByIdProductResponse getById(@PathVariable int id) {
         return productService.getById(id);
@@ -51,8 +63,4 @@ public class ProductsController {
         productService.delete(id);
     }
 
-    @GetMapping("/category/{categoryId}")
-    public GetProductsByCategoryIdResponse getProductsByCategoryId(@PathVariable int categoryId) {
-        return productService.getProductsByCategoryId(categoryId);
-    }
 }

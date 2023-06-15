@@ -44,20 +44,25 @@ public class UsersController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody CreateUserRequest createUserRequest) {
-        User existingUser = userRepository.findByEmail(createUserRequest.getMail());
-        if (existingUser != null) {
-            return ResponseEntity.badRequest().body("Bu e-posta adresi zaten kullanılıyor.");
+        try {
+            User existingUser = userRepository.findByEmail(createUserRequest.getMail());
+            if (existingUser != null) {
+                return ResponseEntity.badRequest().body("Bu e-posta adresi zaten kullanılıyor.");
+            }
+
+            User newUser = new User();
+            newUser.setName(createUserRequest.getName());
+            newUser.setPassword(createUserRequest.getPassword());
+            newUser.setEmail(createUserRequest.getMail());
+
+            userRepository.save(newUser);
+
+            RegisterResponse registerResponse = new RegisterResponse(newUser.getId(), newUser.getName(), newUser.getEmail());
+            return ResponseEntity.ok(registerResponse);
+        } catch (Exception e) {
+            e.printStackTrace(); // Hata mesajını konsola yazdır
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Bir hata oluştu." + e.getMessage());
         }
-
-        User newUser = new User();
-        newUser.setName(createUserRequest.getName());
-        newUser.setPassword(createUserRequest.getPassword());
-        newUser.setEmail(createUserRequest.getMail());
-
-        userRepository.save(newUser);
-
-        RegisterResponse registerResponse = new RegisterResponse(newUser.getId(), newUser.getName(), newUser.getEmail());
-        return ResponseEntity.ok(registerResponse);
     }
 
 
